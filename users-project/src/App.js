@@ -10,7 +10,7 @@ function App() {
         setUsersList((prevUsersList) => {
             return [
                 ...prevUsersList,
-                { user: userName, age: userAge, id: Math.random().toString() },
+                { name: userName, age: userAge, id: Math.random().toString() },
             ];
         });
     };
