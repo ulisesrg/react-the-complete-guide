@@ -16,10 +16,11 @@ function App() {
     };
 
     return (
-        <div>
+        <>
+        {/* It could also be React.Fragment or just Fragment if we import it at the side of useState */}
             <AddUser onAddUser={addUserHandler} />
             <UsersList users={usersList} />
-        </div>
+        </>
     );
 }
 
