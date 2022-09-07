@@ -11,6 +11,47 @@ const Login = (props) => {
     const [passwordIsValid, setPasswordIsValid] = useState();
     const [formIsValid, setFormIsValid] = useState(false);
 
+    // NO SECOND ARGUMENT
+    /* 
+    useEffect(() => {
+        // This will run when the component is first rendered and every time it is re-rendered
+        console.log('EFFECT RUNNING');
+
+        // This will run every time before the component is re-rendered
+        return () => {
+            console.log('EFFECT CLEANUP');
+        };
+    }); 
+    */
+
+    // EMPTY ARRAY AS SECOND ARGUMENT
+    /* 
+    useEffect(() => {
+        // This will run ONLY when the component is first rendered
+        console.log('EFFECT RUNNING');
+
+        // This will run before the component is unmounted
+        return () => {
+            console.log('EFFECT CLEANUP');
+        };
+    }, []); 
+    */
+
+    
+    // DEPENDENCIES ARRAY AS SECOND ARGUMENT
+    /*
+    useEffect(() => {
+        // This will run when the component is first rendered AND
+        // when the dependencies have been updated (that will cause the component to be re-rendered)
+        console.log('EFFECT RUNNING');
+
+        // This will run before the component is unmounted
+        return () => {
+            console.log('EFFECT CLEANUP');
+        };
+    }, [enteredEmail]);
+    */    
+
     useEffect(() => {
         const identifier = setTimeout(() => {
             console.log('Checking form validity!');
