@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Button from './components/UI/Button/Button';
+import DemoOutput from './components/Demo/DemoOutput';
 import './App.css';
 
 function App() {
@@ -15,7 +16,9 @@ function App() {
     return (
         <div className="app">
             <h1>Hi there!</h1>
-            {showParagraph && <p>This is new!</p>}
+            {/* Even if show prop value is hardcoded, or if it doesn't have any props,
+            the child components will be re-evaluated */}
+            <DemoOutput show={false} />
             <Button onClick={toggleParagraphHandler}>Toggle Paragraph!</Button>
         </div>
     );
