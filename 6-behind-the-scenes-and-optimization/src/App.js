@@ -16,8 +16,8 @@ function App() {
     return (
         <div className="app">
             <h1>Hi there!</h1>
-            {/* Even if show prop value is hardcoded, or if it doesn't have any props,
-            the child components will be re-evaluated */}
+            {/* Even if a prop value is hardcoded, or if the child components
+            don't have any props, they will be re-evaluated */}
             <DemoOutput show={false} />
             <Button onClick={toggleParagraphHandler}>Toggle Paragraph!</Button>
         </div>

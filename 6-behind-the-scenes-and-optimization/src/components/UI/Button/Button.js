@@ -17,4 +17,11 @@ const Button = (props) => {
     );
 };
 
-export default Button;
+/*
+this tells React to only re-evalute the component if the props changed
+as props.onClick === props.previous.onClick will be false because
+onClick is a function and, hence, an object and two objects can't be the same thing
+So, it will re-evaluate it
+*/
+
+export default React.memo(Button);
