@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -8,7 +8,7 @@ function App() {
     const [isLoading, setIsloading] = useState(false);
     const [error, setError] = useState(null);
 
-    async function fetchMoviesHandler() {
+    const fetchMoviesHandler = useCallback(async () => {
         setIsloading(true);
         setError(null);
 
@@ -35,7 +35,16 @@ function App() {
         }
 
         setIsloading(false);
-    }
+    }, []);
+
+    /*
+        As we pass fetchMoviesHandler as a dependency (because in other projects the functions could change)
+        and it is a function (and an object too), it will allways check that a previous instance of it 
+        is different that the current one, so we use useCallback above
+    */
+    useEffect(() => {
+        fetchMoviesHandler();
+    }, [fetchMoviesHandler]);
 
     let content = <p>Found no movies.</p>;
 
