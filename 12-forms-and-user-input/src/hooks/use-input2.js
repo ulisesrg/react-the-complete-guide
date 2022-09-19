@@ -19,6 +19,11 @@ const useInput2 = (validate) => {
         setIsTouched(isTouched);
     };
 
+    const reset = () => {
+        setEnteredValue('');
+        setIsTouched(false);
+    };
+
     return {
         value: enteredValue,
         valueChangeHandler,
@@ -26,6 +31,7 @@ const useInput2 = (validate) => {
         inputIsValid: valueIsValid,
         inputShowError,
         inputTouchHandler,
+        reset,
     };
 };
 

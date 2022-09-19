@@ -1,5 +1,8 @@
 import useInput2 from '../hooks/use-input2';
 
+const isNotEmpty = (value) => value !== '';
+const isEmail = (value) => value.includes('@');
+
 const BasicForm = (props) => {
     const {
         value: nameValue,
@@ -8,7 +11,8 @@ const BasicForm = (props) => {
         inputIsValid: nameIsValid,
         inputShowError: nameShowError,
         inputTouchHandler: nameTouchHandler,
-    } = useInput2((value) => value !== '');
+        reset: resetName,
+    } = useInput2(isNotEmpty);
 
     const {
         value: lastNameValue,
@@ -17,7 +21,8 @@ const BasicForm = (props) => {
         inputIsValid: lastNameIsValid,
         inputShowError: lastNameShowError,
         inputTouchHandler: lastNameTouchHandler,
-    } = useInput2((value) => value !== '');
+        reset: resetLastName,
+    } = useInput2(isNotEmpty);
 
     const {
         value: emailValue,
@@ -26,29 +31,46 @@ const BasicForm = (props) => {
         inputIsValid: emailIsValid,
         inputShowError: emailShowError,
         inputTouchHandler: emailTouchHandler,
-    } = useInput2((value) => value.includes('@'));
+        reset: resetEmail,
+    } = useInput2(isEmail);
 
     const formIsValid = nameIsValid && lastNameIsValid && emailIsValid;
 
-    const formSubmissionHandler = (event) => {
+    const formSubmitHandler = (event) => {
         event.preventDefault();
 
         nameTouchHandler(true);
         lastNameTouchHandler(true);
         emailTouchHandler(true);
 
-        if (formIsValid) {
-            console.log('name ', nameValue);
+        if (!formIsValid) {
+            console.log('form is invalid');
             return;
         }
 
-        console.log('form is invalid');
+        console.log('form submitted');
+        console.log(nameValue, lastNameValue, emailValue);
+        resetName();
+        resetLastName();
+        resetEmail();
     };
 
+    const nameInputClasses = nameShowError
+        ? 'form-control invalid'
+        : 'form-control';
+
+    const lastNameInputClasses = lastNameShowError
+        ? 'form-control invalid'
+        : 'form-control';
+
+    const emailInputClasses = emailShowError
+        ? 'form-control invalid'
+        : 'form-control';
+
     return (
-        <form onSubmit={formSubmissionHandler}>
+        <form onSubmit={formSubmitHandler}>
             <div className="control-group">
-                <div className="form-control">
+                <div className={nameInputClasses}>
                     <label htmlFor="name">First Name</label>
                     <input
                         type="text"
@@ -57,9 +79,11 @@ const BasicForm = (props) => {
                         onBlur={nameBlurHandler}
                         value={nameValue}
                     />
-                    {nameShowError && <p>Name error</p>}
+                    {nameShowError && (
+                        <p className="error-text">Please enter a first name.</p>
+                    )}
                 </div>
-                <div className="form-control">
+                <div className={lastNameInputClasses}>
                     <label htmlFor="name">Last Name</label>
                     <input
                         type="text"
@@ -68,10 +92,12 @@ const BasicForm = (props) => {
                         onBlur={lastNameBlurHandler}
                         value={lastNameValue}
                     />
-                    {lastNameShowError && <p>Last Name error</p>}
+                    {lastNameShowError && (
+                        <p className="error-text">Please enter a last name.</p>
+                    )}
                 </div>
             </div>
-            <div className="form-control">
+            <div className={emailInputClasses}>
                 <label htmlFor="email">E-Mail Address</label>
                 <input
                     type="email"
@@ -80,10 +106,14 @@ const BasicForm = (props) => {
                     onBlur={emailBlurHandler}
                     value={emailValue}
                 />
-                {emailShowError && <p>Email error</p>}
+                {emailShowError && (
+                    <p className="error-text">
+                        Please enter a valid email address.
+                    </p>
+                )}
             </div>
             <div className="form-actions">
-                <button>Submit</button>
+                <button disabled={!formIsValid}>Submit</button>
             </div>
         </form>
     );
