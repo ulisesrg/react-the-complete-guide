@@ -114,6 +114,7 @@ const BasicForm = (props) => {
             </div>
             <div className="form-actions">
                 <button disabled={!formIsValid}>Submit</button>
+                {/* <button>Submit</button> */}
             </div>
         </form>
     );

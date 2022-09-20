@@ -1,31 +1,66 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
+
+const initialInputState = {
+    value: '',
+    isTouched: false,
+};
+
+const inputStateReducer = (state, action) => {
+    if (action.type === 'INPUT') {
+        return { value: action.value, isTouched: state.isTouched };
+    }
+
+    if (action.type === 'BLUR') {
+        return { isTouched: true, value: state.value };
+    }
+
+    // this is important especially if we don't disable the button
+    if (action.type === 'TOUCH') {
+        return { isTouched: action.isTouched, value: state.value };
+    }
+
+    if (action.type === 'RESET') {
+        return { isTouched: false, value: '' };
+    }
+
+    return inputStateReducer;
+};
 
 const useInput2 = (validate) => {
-    const [enteredValue, setEnteredValue] = useState('');
-    const [isTouched, setIsTouched] = useState(false);
+    const [inputState, dispatch] = useReducer(
+        inputStateReducer,
+        initialInputState
+    );
 
-    let valueIsValid = validate(enteredValue);
-    let inputShowError = !valueIsValid && isTouched;
+    // const [enteredValue, setEnteredValue] = useState('');
+    // const [isTouched, setIsTouched] = useState(false);
+
+    let valueIsValid = validate(inputState.value);
+    let inputShowError = !valueIsValid && inputState.isTouched;
 
     const valueChangeHandler = (event) => {
-        setEnteredValue(event.target.value);
+        dispatch({ type: 'INPUT', value: event.target.value });
+        // setEnteredValue(event.target.value);
     };
 
     const inputBlurHandler = (event) => {
-        setIsTouched(true);
+        dispatch({ type: 'BLUR' });
+        // setIsTouched(true);
     };
 
     const inputTouchHandler = (isTouched) => {
-        setIsTouched(isTouched);
+        dispatch({ type: 'TOUCH', isTouched: isTouched });
+        // setIsTouched(isTouched);
     };
 
     const reset = () => {
-        setEnteredValue('');
-        setIsTouched(false);
+        dispatch({ type: 'RESET' });
+        // setEnteredValue('');
+        // setIsTouched(false);
     };
 
     return {
-        value: enteredValue,
+        value: inputState.value,
         valueChangeHandler,
         inputBlurHandler,
         inputIsValid: valueIsValid,
