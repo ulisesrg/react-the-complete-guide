@@ -34,12 +34,18 @@ import classes from './AvailableMeals.module.css';
 const AvailableMeals = () => {
     const [meals, setMeals] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // true because in this app it will be loading from the beginning
+    const [httpError, setHttpError] = useState(); // undefined in this case
 
     useEffect(() => {
         const fetchMeals = async () => {
             const response = await fetch(
                 'https://react-complete-guide-htt-c56f1-default-rtdb.firebaseio.com/meals.json'
             );
+
+            if (!response.ok) {
+                throw new Error('Something went wrong');
+            }
+
             const responseData = await response.json();
 
             const loadedMeals = [];
@@ -57,11 +63,31 @@ const AvailableMeals = () => {
             setIsLoading(false);
         };
 
-        fetchMeals();
+        /* 
+            This won't work because fetchMeals is an async function that returns a promise.
+            We could await fetchMeals but that will lead us to make the anonymous function (first argument)
+            of useEffect an async function and we are not allowed to do that (it would return another promise).
+            So we use .then and .catch as regular promises
+        */
+        // try {
+        //     fetchMeals();
+        // } catch (error) {
+        //     setIsLoading(true);
+        //     setHttpError(error.message);
+        // }
+
+        fetchMeals().catch((error) => {
+            setIsLoading(false);
+            setHttpError(error.message);
+        });
     }, []);
 
     if (isLoading) {
         return <p className={classes.MealsLoading}>Loading...</p>;
+    }
+
+    if (httpError) {
+        return <p className={classes.MealsError}>{httpError}</p>;
     }
 
     const mealsList = meals.map((meal) => (
