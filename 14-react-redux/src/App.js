@@ -3,8 +3,8 @@ import CounterClassBased from './components/CounterClassBased';
 
 function App() {
     return (
-        // <Counter />
-        <CounterClassBased />
+        <Counter />
+        // <CounterClassBased />
     );
 }
 
