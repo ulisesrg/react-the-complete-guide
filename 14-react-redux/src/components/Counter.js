@@ -11,8 +11,8 @@ const Counter = () => {
         subscribes the component to the state, so whenever the state changes, the
         component will be re-evaluated 
     */
-    const counter = useSelector((state) => state.counter);
-    const showCounter = useSelector((state) => state.showCounter);
+    const counter = useSelector((state) => state.counter.counter);
+    const showCounter = useSelector((state) => state.counter.showCounter);
 
     const incrementHandler = () => {
         /* 

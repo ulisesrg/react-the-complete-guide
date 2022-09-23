@@ -1,10 +1,16 @@
 import Counter from './components/Counter';
-import CounterClassBased from './components/CounterClassBased';
+// import CounterClassBased from './components/CounterClassBased';
+import Header from './components/Header';
+import Auth from './components/Auth';
 
 function App() {
     return (
-        <Counter />
-        // <CounterClassBased />
+        <>
+            <Header />
+            <Auth />
+            <Counter />
+            {/* <CounterClassBased /> */}
+        </>
     );
 }
 
