@@ -56,5 +56,6 @@ const store = configureStore({
     { type: 'some auto-generated unique identifier }
 */
 export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
 
 export default store;
