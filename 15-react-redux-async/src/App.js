@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
 import { uiActions } from './store/ui-slice';
+import { sendCartData } from './store/cart-slice';
 
 let isInitial = true;
 
@@ -16,7 +17,8 @@ function App() {
     const notification = useSelector((state) => state.ui.notification);
 
     useEffect(() => {
-        const sendCartData = async () => {
+        // Option 1 to use async functions with redux is doing it inside a component with useEffect
+        /* const sendCartData = async () => {
             dispatch(
                 uiActions.showNotification({
                     status: 'pending',
@@ -59,7 +61,22 @@ function App() {
                     message: 'Sending cart data failed!',
                 })
             );
-        });
+        }); */
+
+        // Option 2 to use async functions with redux is doing it with action creators / thunks
+        if (isInitial) {
+            isInitial = false;
+            return;
+        }
+
+        /* 
+            normally we used to dispatch action creators (functions that return an action 
+            object -the ones that have a type property-), but redux toolkit also can 
+            dispatch functions that return another function which eventually returns
+            the action (that last function one will be executed by redux toolkit automatically 
+            providing the 'dispatch' argument)
+        */
+        dispatch(sendCartData(cart));
     }, [cart, dispatch]);
 
     return (
