@@ -80,7 +80,10 @@ function App() {
             the action (that last function one will be executed by redux toolkit automatically 
             providing the 'dispatch' argument)
         */
-        dispatch(sendCartData(cart));
+
+        if (cart.changed) {
+            dispatch(sendCartData(cart));
+        }
     }, [cart, dispatch]);
 
     return (
