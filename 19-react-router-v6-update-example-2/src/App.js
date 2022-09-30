@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Navigate, Routes } from 'react-router-dom';
 
 import Welcome from './pages/Welcome';
 import Products from './pages/Products';
@@ -10,20 +10,26 @@ function App() {
         <div>
             <MainHeader />
             <main>
-                <Switch>
-                    <Route path="/" exact>
-                        <Redirect to="/welcome" />
+                <Routes>
+                    {/* 
+                        replace attribute can be added in Navigate to make it work as a 
+                        real redirection and not to simply push that location
+                    */}
+                    <Route path="/" element={<Navigate replace to="/welcome" />} />
+                    {/* 
+                        Routes that are going to have nested routes need to have the asterisk symbol 
+                    */}
+                    <Route path="/welcome/*" element={<Welcome />} />
+                    {/* Second new approach for nested routes */}
+                    <Route path="/welcome-2/*" element={<Welcome />}>
+                        <Route path="new-user" element={<p>Welcome, new user! 2</p>} />
                     </Route>
-                    <Route path="/welcome">
-                        <Welcome />
-                    </Route>
-                    <Route path="/products" exact>
-                        <Products />
-                    </Route>
-                    <Route path="/products/:productId">
-                        <ProductDetail />
-                    </Route>
-                </Switch>
+                    <Route path="/products" element={<Products />} />
+                    <Route
+                        path="/products/:productId"
+                        element={<ProductDetail />}
+                    />
+                </Routes>
             </main>
         </div>
     );
