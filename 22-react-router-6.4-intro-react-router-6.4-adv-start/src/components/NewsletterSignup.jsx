@@ -11,6 +11,9 @@ function NewsletterSignup() {
         event.preventDefault();
         const enteredEmail = emailEl.current.value;
         // could validate input here
+
+        // fetchet manually triggers a form submission or a loader
+        // with fetcher, instead of <Form>, we can stay in the same page
         fetcher.submit(
             // better: use fetcher.Form instead
             { email: enteredEmail },
