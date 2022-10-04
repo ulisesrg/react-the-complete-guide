@@ -23,37 +23,46 @@ const AuthForm = () => {
 
         setIsLoading(true);
 
+        let url;
         if (isLogin) {
+            url =
+                'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCiwfG1q5-qpk5iVk3qLfV0kFc99-Nbpnk';
         } else {
-            fetch(
-                'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key= AIzaSyCiwfG1q5-qpk5iVk3qLfV0kFc99-Nbpnk ',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        email: enteredEamil,
-                        password: enteredPassword,
-                        returnSecureToken: true,
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            ).then((res) => {
+            url =
+                'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCiwfG1q5-qpk5iVk3qLfV0kFc99-Nbpnk';
+        }
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                email: enteredEamil,
+                password: enteredPassword,
+                returnSecureToken: true,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => {
                 setIsLoading(false);
                 if (res.ok) {
-                    // ...
+                    return res.json();
                 } else {
-                    res.json().then((data) => {
+                    return res.json().then((data) => {
                         let errorMessage = 'Authentication failed';
                         // we can return the Firebase message
                         // if (data && data.error && data.error.message) {
                         //     errorMessage = data.error.message;
                         // }
-                        alert(errorMessage);
+                        throw new Error(errorMessage);
                     });
                 }
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                alert(err.message);
             });
-        }
     };
 
     return (
