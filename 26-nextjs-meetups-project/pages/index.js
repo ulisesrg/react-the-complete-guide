@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import MeetupList from '../components/meetups/MeetupList';
 
 const DUMMY_MEETUPS = [
@@ -18,15 +17,21 @@ const DUMMY_MEETUPS = [
     },
 ];
 
-function HomePage() {
-    const [loadedMeetups, setLoadedMeetups] = useState([]);
+function HomePage(props) {
+    return <MeetupList meetups={props.meetups} />;
+}
 
-    useEffect(() => {
-        // send a http request and fetch data
-        setLoadedMeetups(DUMMY_MEETUPS);
-    }, []);
-
-    return <MeetupList meetups={loadedMeetups} />;
+/* 
+    Static Site Generation: This code will only be executed during the build process and
+    will get the data so it is ready for the first component render cycle
+*/
+export async function getStaticProps() {
+    // fetch data from an API
+    return {
+        props: {
+            meetups: DUMMY_MEETUPS,
+        },
+    };
 }
 
 export default HomePage;
